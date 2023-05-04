@@ -1,6 +1,5 @@
 package id.co.perspro.loginservice.configuration;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +30,7 @@ public class SecurityConfig {
   private final UserDetailsServiceImpl userDetailsService;
 
   private final AuthEntryPointJwt unauthorizedHandler;
-  
+
   @Bean
   public AuthTokenFilter autheticationJwtTokenFilter() {
 
@@ -47,9 +46,10 @@ public class SecurityConfig {
 
     return authProvider;
   }
-  
+
   @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig)
+      throws Exception {
     return authConfig.getAuthenticationManager();
   }
 
@@ -68,7 +68,10 @@ public class SecurityConfig {
         .requestMatchers("/api/auth/**").permitAll().requestMatchers("/api/test/**").permitAll()
         .requestMatchers(h2ConsolePath + "/**").permitAll().anyRequest().authenticated();
 
-    http.headers().frameOptions().sameOrigin();
+    // http.headers().frameOptions().sameOrigin();
+    http.headers().frameOptions().disable();
+
+    http.authenticationProvider(authenticationProvider());
 
     http.addFilterBefore(autheticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 

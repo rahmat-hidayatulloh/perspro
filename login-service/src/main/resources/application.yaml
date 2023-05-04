@@ -4,21 +4,23 @@ server:
   context-path: /resource-server
 
 spring:
-  h2:
-   console:
-    enable: true
-    path: /h2-ui
-   datasource:
-    url: jdbc:h2:file:./perspro
-    driverClassName: org.h2.Driver
-    username: admin
-    password: P@$$w0rd
-   jpa:
-    show-sql: true
-    properties:
-     hibernate:
-      dialect: org.hibernate.dialect.H2Dialect
-      ddl-auto: update
+ h2:
+  console:
+   enable: true
+   path: /h2-ui
+  datasource:
+   url: jdbc:h2:mem:testdb
+   driverClassName: org.h2.Driver
+#   username: admin
+#   password: P@$$w0rd
+  jpa:
+   database-platform: org.hibernate.dialect.H2Dialect
+   
+#   show-sql: true
+#    properties:
+#     hibernate:
+#      dialect: org.hibernate.dialect.H2Dialect
+#      ddl-auto: update
 
 # JWT CONFIGURATION
 perspro:
