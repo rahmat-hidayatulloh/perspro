@@ -1,20 +1,33 @@
 server:
  port: 8081
  servlet:
-  context-path: /resource-server
+  context-path: /api
+
+#spring:
+# h2:
+#  console:
+#   enable: true
+#   path: /h2-ui
+#  datasource:
+#   url: jdbc:h2:mem:testdb
+#   driverClassName: org.h2.Driver
+#   username: sa
+#   password:
+#  jpa:
+#   database-platform: org.hibernate.dialect.H2Dialect
 
 spring:
+ datasource:
+  url: jdbc:h2:mem:test_db
+  username: sa
+  password:
+  driverClassName: org.h2.Driver
+ jpa:
+  spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
  h2:
   console:
-   enable: true
+   enabled: true
    path: /h2-ui
-  datasource:
-   url: jdbc:h2:mem:testdb
-   driverClassName: org.h2.Driver
-#   username: admin
-#   password: P@$$w0rd
-  jpa:
-   database-platform: org.hibernate.dialect.H2Dialect
    
 #   show-sql: true
 #    properties:

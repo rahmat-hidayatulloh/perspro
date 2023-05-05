@@ -1,13 +1,17 @@
 package id.co.perspro.loginservice.configuration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,14 +19,14 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import id.co.perspro.loginservice.services.implement.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
-@EnableMethodSecurity(
-    // securedEnabled = true,
-    // jsr250Enabled = true,
-    prePostEnabled = true)
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+  private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
 
   @Value("${spring.h2.console.path}")
   private String h2ConsolePath;
@@ -31,10 +35,12 @@ public class SecurityConfig {
 
   private final AuthEntryPointJwt unauthorizedHandler;
 
+  private final AuthTokenFilter authTokenFilter;
+
   @Bean
   public AuthTokenFilter autheticationJwtTokenFilter() {
 
-    return new AuthTokenFilter();
+    return authTokenFilter;
   }
 
   @Bean
@@ -62,18 +68,24 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-    http.cors().and().csrf().disable().exceptionHandling()
-        .authenticationEntryPoint(unauthorizedHandler).and().sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeHttpRequests()
-        .requestMatchers("/api/auth/**").permitAll().requestMatchers("/api/test/**").permitAll()
-        .requestMatchers(h2ConsolePath + "/**").permitAll().anyRequest().authenticated();
+    log.info("h2 db console path : {}", h2ConsolePath);
+
+    http.csrf().disable()
+            .exceptionHandling()
+            .authenticationEntryPoint(unauthorizedHandler)
+            .and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authorizeHttpRequests()
+            .requestMatchers("/auth/**").permitAll()
+            .requestMatchers("/test/**").permitAll()
+            .requestMatchers(new AntPathRequestMatcher(h2ConsolePath + "/**")).permitAll()
+            .anyRequest().authenticated();
 
     // http.headers().frameOptions().sameOrigin();
+    http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
+
     http.headers().frameOptions().disable();
-
-    http.authenticationProvider(authenticationProvider());
-
-    http.addFilterBefore(autheticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
   }
