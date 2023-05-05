@@ -8,6 +8,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import id.co.perspro.loginservice.services.implement.UserDetailsServiceImpl;
 import id.co.perspro.loginservice.until.JwtUtils;
@@ -16,7 +18,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
+@Component
 public class AuthTokenFilter extends OncePerRequestFilter {
 
   private static final Logger log = LoggerFactory.getLogger(AuthTokenFilter.class);
@@ -40,7 +42,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         String username = jwtUtils.getUsernameFromJwtToken(jwt);
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken authentication =
-            new UsernamePasswordAuthenticationToken(userDetails, null,
+            new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null,
                 userDetails.getAuthorities());
 
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -57,8 +59,10 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
 
   private String parseJwt(HttpServletRequest request) {
-    String jwt = jwtUtils.getJwtFromCookies(request);
-    return jwt;
+    final String bearerToken = request.getHeader("Authorization");
+    if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer "))
+    {return bearerToken.substring(7); } // The part after "Bearer "
+    return null;
   }
 
 }
