@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import id.co.perspro.loginservice.model.UserEntity;
+import id.co.perspro.loginservice.model.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
