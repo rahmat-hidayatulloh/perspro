@@ -1,5 +1,6 @@
 package id.co.perspro.loginservice.model.request;
 
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,8 @@ public class SignupRequest {
   private String email;
   
   private String password;
+  
+  private Set<String> role;
   
   
 }

@@ -79,6 +79,7 @@ public class SecurityConfig {
             .authorizeHttpRequests()
             .requestMatchers("/auth/**").permitAll()
             .requestMatchers("/test/**").permitAll()
+            .requestMatchers("/error").permitAll()
             .requestMatchers(new AntPathRequestMatcher(h2ConsolePath + "/**")).permitAll()
             .anyRequest().authenticated();
 
