@@ -25,6 +25,7 @@ spring:
 # JWT CONFIGURATION
 perspro:
   app:
+     jwtTokenType: Bearer
      jwtCookieName: perspro
      jwtSecret: persproJwtSecretKey
      jwtExpirationMs: 86400000
