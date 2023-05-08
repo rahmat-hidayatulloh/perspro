@@ -4,20 +4,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import id.co.perspro.loginservice.exception.BusinessException;
 import id.co.perspro.loginservice.model.entity.RoleEntity;
 import id.co.perspro.loginservice.model.entity.UserEntity;
 import id.co.perspro.loginservice.model.enums.UserRoleEnum;
@@ -48,7 +48,7 @@ public class AuthController {
   private final JwtUtils jwtUtils;
 
   @PostMapping("/signin")
-  public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest request) {
+  public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest request) {
 
     Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
@@ -59,7 +59,7 @@ public class AuthController {
 
     ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
 
-    List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
+    List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority)
         .collect(Collectors.toList());
 
     return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
@@ -71,29 +71,12 @@ public class AuthController {
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest request) {
 
     if (userRepository.existsByUsername(request.getUsername())) {
-      return ResponseEntity.badRequest()
-          .body(new MessageResponse("Error: Username is already taken!"));
+      throw new BusinessException("Username is already taken!");
     }
 
     if (userRepository.existsByEmail(request.getEmail())) {
-      return ResponseEntity.badRequest()
-          .body(new MessageResponse("Error: Email is already in use!"));
+      throw new BusinessException("Email is already in use!");
     }
-
-    // UserEntity user = new UserEntity(request.getUsername(), request.getEmail(),
-    // encoder.encode(request.getPassword()));
-    //
-    // // Set<String> strRoles = request.getRole();
-    // Set<RoleEntity> roles = new HashSet<>();
-    //
-    // RoleEntity userRole = roleRepository.findByRole(UserRoleEnum.ROLE_USER)
-    // .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-    // roles.add(userRole);
-    //
-    // user.setRoles(roles);
-    // userRepository.save(user);
-    // return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-
 
     // Create new user's account
     UserEntity user = new UserEntity(request.getUsername(), request.getEmail(),
@@ -104,26 +87,26 @@ public class AuthController {
 
     if (strRoles == null) {
       RoleEntity userRole = roleRepository.findByRole(UserRoleEnum.ROLE_USER)
-          .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+          .orElseThrow(() -> new BusinessException("Role is not found."));
       roles.add(userRole);
     } else {
       strRoles.forEach(role -> {
         switch (role) {
           case "admin":
             RoleEntity adminRole = roleRepository.findByRole(UserRoleEnum.ROLE_ADMIN)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                .orElseThrow(() -> new BusinessException("Role is not found."));
             roles.add(adminRole);
 
             break;
           case "mod":
             RoleEntity modRole = roleRepository.findByRole(UserRoleEnum.ROLE_MODERATOR)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                .orElseThrow(() -> new BusinessException("Role is not found."));
             roles.add(modRole);
 
             break;
           default:
             RoleEntity userRole = roleRepository.findByRole(UserRoleEnum.ROLE_USER)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                .orElseThrow(() -> new BusinessException("Role is not found."));
             roles.add(userRole);
         }
       });

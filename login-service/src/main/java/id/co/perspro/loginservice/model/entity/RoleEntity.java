@@ -16,17 +16,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "roles")
 public class RoleEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int userId;
+  private int id;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "role", length = 20)
