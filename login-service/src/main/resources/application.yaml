@@ -32,7 +32,7 @@ perspro:
 #      jwtRefreshCookieName: perspro-jwt-refresh
 #      jwtRefreshExpirationMs: 86400000
   openapi:
-    url: http://localhost:8081
+    url: http://localhost:8081/api
   
 # For test
 #perspro:
