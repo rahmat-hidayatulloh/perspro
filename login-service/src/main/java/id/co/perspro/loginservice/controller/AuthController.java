@@ -23,7 +23,6 @@ public class AuthController {
 
   private final JwtUtils jwtUtils;
 
-
   private final PostSigninService postSigninService;
 
   private final PostSignupService postSignupService;
