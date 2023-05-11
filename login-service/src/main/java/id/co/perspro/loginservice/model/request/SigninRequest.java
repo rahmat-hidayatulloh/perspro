@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class LoginRequest extends BaseRequest{
+public class SigninRequest extends BaseRequest{
 
   /**
    * 
