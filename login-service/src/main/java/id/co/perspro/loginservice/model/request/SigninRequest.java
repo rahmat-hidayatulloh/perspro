@@ -1,7 +1,7 @@
 package id.co.perspro.loginservice.model.request;
 
-import java.util.Set;
 import id.co.perspro.loginservice.common.base.BaseRequest;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,20 +13,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class SignupRequest extends BaseRequest {
+public class SigninRequest extends BaseRequest{
 
   /**
    * 
    */
-  private static final long serialVersionUID = -941102263792270894L;
+  private static final long serialVersionUID = 1442886010920541949L;
 
+  @NotBlank
   private String username;
 
-  private String email;
-
+  @NotBlank
   private String password;
-
-  private Set<String> role;
-
 
 }

@@ -91,5 +91,10 @@ public class JwtUtils {
         .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
 
   }
+  
+  public String generateTokenAccess(UserDetailsImpl userPrinciple) {
+    
+    return generateTokenFromUsername(userPrinciple.getUsername());    
+  }
 
 }
