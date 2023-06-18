@@ -76,7 +76,6 @@ public class SecurityConfig {
             .and()
             .authorizeHttpRequests()
             .requestMatchers("/auth/**").permitAll()
-            .requestMatchers("/test/**").permitAll()
             .requestMatchers("/error").permitAll()
             .requestMatchers("/swagger-ui/**").permitAll()
             .requestMatchers("/v3/**").permitAll()
