@@ -1,11 +1,21 @@
 package id.co.perspro.loginservice.exception;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class BusinessException extends RuntimeException {
 
-    private String message;
+  /**
+  * 
+  */
+  private static final long serialVersionUID = -7031211454430968231L;
 
-    public BusinessException(String message) {
-        super(message);
-        this.message = message;
-    }
+  private String message;
+
+  public BusinessException(String message) {
+    super(message);
+    this.message = message;
+  }
 }
