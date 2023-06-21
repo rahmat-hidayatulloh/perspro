@@ -9,7 +9,6 @@
 		<artifactId>possys-api</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>id.co.perspro.possys</groupId>
 	<artifactId>login-service</artifactId>
 	<name>login-service</name>
 	<description>login-service</description>
@@ -18,7 +17,11 @@
 		<springfox.version>3.0.0</springfox.version>
 	</properties>
 	<dependencies>
-
+		<dependency>
+			<groupId>id.co.perspro.possys</groupId>
+  			<artifactId>common-helper</artifactId>
+  			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
