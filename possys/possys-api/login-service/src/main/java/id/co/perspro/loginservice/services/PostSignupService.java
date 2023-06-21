@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import id.co.perspro.loginservice.common.service.BaseService;
+import common.service.BaseService;
 import id.co.perspro.loginservice.exception.BusinessException;
 import id.co.perspro.loginservice.model.entity.RoleEntity;
 import id.co.perspro.loginservice.model.entity.UserEntity;

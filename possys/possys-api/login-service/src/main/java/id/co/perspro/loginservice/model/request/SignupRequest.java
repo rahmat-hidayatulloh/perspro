@@ -1,7 +1,7 @@
 package id.co.perspro.loginservice.model.request;
 
 import java.util.Set;
-import id.co.perspro.loginservice.common.base.BaseRequest;
+import common.base.BaseRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,6 +1,7 @@
 package id.co.perspro.loginservice.model.response;
 
-import id.co.perspro.loginservice.common.base.BaseResponse;
+
+import common.base.BaseResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

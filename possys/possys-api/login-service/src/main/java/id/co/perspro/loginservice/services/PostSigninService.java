@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import id.co.perspro.loginservice.common.service.BaseService;
+import common.service.BaseService;
 import id.co.perspro.loginservice.model.request.SigninRequest;
 import id.co.perspro.loginservice.model.response.SigninResponse;
 import id.co.perspro.loginservice.services.implement.UserDetailsImpl;

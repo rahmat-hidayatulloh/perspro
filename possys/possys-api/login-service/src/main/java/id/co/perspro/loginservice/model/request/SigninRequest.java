@@ -1,6 +1,6 @@
 package id.co.perspro.loginservice.model.request;
 
-import id.co.perspro.loginservice.common.base.BaseRequest;
+import common.base.BaseRequest;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

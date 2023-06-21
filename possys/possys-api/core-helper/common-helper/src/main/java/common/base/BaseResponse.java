@@ -1,4 +1,4 @@
-package id.co.perspro.loginservice.common.base;
+package common.base;
 
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
